@@ -5,14 +5,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./Assets/CSS/style.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
 
 
     <title>Weather Dashboard</title>
 </head>
 
 <body>
+    <header>
+        <!-- header banner -->
+        <div>
+            <h1>Weather Dashboard</h1>
+        </div>
+    </header>
 
+    <main>
+        <div class="container">
+            <div class="row">
+                <!-- Search bar -->
+                <aside class="col-md-4 col-lg-4">
+                    <!-- City Select Box -->
+                    <form id="city-form">
+                        <!-- Label for Text Box -->
+                        <label for="city-input">Search for a City:</label><br>
+                        <!-- Text Input Box -->
+                        <input type="text" id="city-input">
+                        <!-- Submit Button -->
+                        <button id="select-city-btn" type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <!-- recent searches -->
+                    <div id="recent-searches"></div>
+                </aside>
+                <!-- City current conditions -->
+                <section class="col-md-8 col-lg-8">
+                    <section>
+                        <h3><span id="city"></span><span id="date"></span><img id="weather-icon"src="" alt="Weather Image"></img></h3>
+                        <p>Temperature: <span id="temp">90.9</span></p>
+                        <p>Humidity: <span id="humidity">41%</span></p>
+                        <p>Wind Speed: <span id="wind">4.7 MPH</span></p>
+                        <p>UV index: <span id="uv-index">9.49</span></p>
+                    </section>
+                    <!-- City 5 day forecast -->
+                    <section>
+                        <!-- header tag -->
+                        <div>
+                            <h3>5-Day Forecast:</h3>
+                        </div>
+                        <div>
+                            <!-- day 1 -->
+                            <div class="card">
+                                <h5><span>16/8/2019</span></h5>
+                                <img scr="" alt="Weather Image"></img>
+                                <p>Temp: <span>90.9</span></p>
+                                <p>Humidit: <span>41%</span></p>
+                            </div>
+                            <!-- day 2 -->
+                            <div class="card">
+                                <h5><span>16/8/2019</span></h5>
+                                <img scr="" alt="Weather Image"></img>
+                                <p>Temp: <span>90.9</span></p>
+                                <p>Humidit: <span>41%</span></p>
+                            </div>
+                            <!-- day 3 -->
+                            <div class="card">
+                                <h5><span>16/8/2019</span></h5>
+                                <img scr="" alt="Weather Image"></img>
+                                <p>Temp: <span>90.9</span></p>
+                                <p>Humidit: <span>41%</span></p>
+                            </div>
+                            <!-- day 4 -->
+                            <div class="card">
+                                <h5><span>16/8/2019</span></h5>
+                                <img scr="" alt="Weather Image"></img>
+                                <p>Temp: <span>90.9</span></p>
+                                <p>Humidit: <span>41%</span></p>
+                            </div>
+                            <!-- day 5 -->
+                            <div class="card">
+                                <h5><span>16/8/2019</span></h5>
+                                <img scr="" alt="Weather Image"></img>
+                                <p>Temp: <span>90.9</span></p>
+                                <p>Humidit: <span>41%</span></p>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+
+    </footer>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>
 </body>
 
