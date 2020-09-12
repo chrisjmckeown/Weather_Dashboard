@@ -190,16 +190,18 @@ $(document).ready(function () {
             // reset the div containing the 5 day forcast
             $("#five-day-forecast").empty();
             // display the conditions for the next 5 days
-            extractDays(response.list, date);
+            extractDays(response.list);
         }).catch(function (err) {
             console.log(err);
         });
     };
 
     // Loop through an array, extracting the data at midday or the last item if there not 5 midday items in the record
-    function extractDays(list, date) {
+    function extractDays(list) {
         // counter to check 5 days are displayed
         var count = 0;
+        var date = moment().format('DD/MM/YYYY');
+        var recordedDays = [];
         // iterate over each item
         list.forEach(function (item) {
             var tempDate = moment(item.dt_txt).format('DD/MM/YYYY');
@@ -212,11 +214,26 @@ $(document).ready(function () {
             if (hour === "12") {
                 renderDay(item);
                 count++;
+                recordedDays.push(tempDate);
             }
         });
-        // if there less than 5 days recorded then display the last conditions in the list
+        // if there less than 5 days recorded then display the last condition in the list if the last conditions day is not already displayed
         if (count < 5) {
-            renderDay(response.list[list.length - 1]);
+            var item = list[list.length - 1];
+            var tempDate = moment(item.dt_txt).format('DD/MM/YYYY');
+            if (!recordedDays.includes(tempDate)) {
+                renderDay(item);
+            }
+            else {
+                // display a placeholder item with 
+                tempDate = moment(item.dt_txt).add(1, 'days').format('DD/MM/YYYY');
+                var $day = $("<div>");
+                $day.addClass("list-group-item active")
+                $day.append('<h5>' + tempDate + '</h5>');
+                $day.append('<p>Information not currently available.</p>');
+                $day.append('<p>Please try again latter.</p>');
+                $("#five-day-forecast").append($day);
+            }
         }
     };
 
