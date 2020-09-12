@@ -13,3 +13,26 @@
 #uv-index[index=violet] {
     background-color: violet;
 }
+.container-fluid{
+    max-width:1350px
+}
+.active{
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.card{
+    margin-bottom: 20px;
+}
+.jumbotron {
+    background-color: rgb(78, 80, 83)!important;
+    color: white;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+.clickme{
+    cursor: pointer;
+}
+.five-day-forecast{
+    padding-left:20px
+}

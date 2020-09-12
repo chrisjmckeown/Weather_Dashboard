@@ -5,6 +5,7 @@
 * [Technologies Utilized](#Technologies-Utilized)
 * [Weather Dashboard](#Weather-Dashboard)
 * [Contact](#Contact)
+* [License](#License)
 
 ## Description
 This website provides access to current and future weather conditions.
@@ -40,3 +41,7 @@ Primary technologies:
 ## Contact
 
 * Please contact me at: chris.j.mckeown@hotmail.com
+
+## License
+
+* See license here: <a href="https://github.com/chrisjmckeown/Weather_Dashboard/blob/master/LICENSE" target="_blank">license agreement</a>

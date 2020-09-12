@@ -14,92 +14,115 @@
 </head>
 
 <body>
-    <header>
+    <div class="container-fluid">
         <!-- header banner -->
-        <div>
+        <header class="jumbotron text-center">
             <h1>Weather Dashboard</h1>
-        </div>
-    </header>
+        </header>
 
-    <main>
-        <div class="container">
+        <main>
             <div class="row">
                 <!-- Search bar -->
-                <aside class="col-md-4 col-lg-4">
-                    <!-- City Select Box -->
-                    <form id="city-form">
-                        <!-- Label for Text Box -->
-                        <label for="city-input">Search for a City:</label><br>
-                        <!-- Text Input Box -->
-                        <input type="text" id="city-input">
-                        <!-- Submit Button -->
-                        <button id="select-city-btn" type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                    <!-- recent searches -->
-                    <div id="recent-searches"></div>
-                </aside>
+                <div class="col-md-4 col-lg-3">
+                    <aside>
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Seach Parameters</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- City Select Box -->
+                                <form id="city-form">
+                                    <!-- Text Input Box -->
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" id="city-input">
+                                    </div>
+                                    <!-- Submit Button -->
+                                    <div class="form-group">
+                                        <button id="select-city-btn" class="btn btn-primary form-control">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="clear-city-btn" class="btn btn-primary form-control">
+                                            <i class="fas fa-trash-alt"></i> Clear
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- recent searches -->
+                        <div class="card">
+                            <div id="recent-searches">
+                                <ul id="recent-search-list" class="list-group">
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
                 <!-- City current conditions -->
-                <section class="col-md-8 col-lg-8">
+                <div class="col-md-8 col-lg-9">
                     <section>
-                        <h3><span id="city"></span><span id="date"></span><img id="weather-icon"src="" alt="Weather Image"></img></h3>
-                        <p>Temperature: <span id="temp">90.9</span></p>
-                        <p>Humidity: <span id="humidity">41%</span></p>
-                        <p>Wind Speed: <span id="wind">4.7 MPH</span></p>
-                        <p>UV index: <span id="uv-index">9.49</span></p>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><span id="city"></span><span id="date"></span><img id="weather-icon" src=""
+                                        alt="Weather Image"></img></h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Temperature: <span id="temp"></span></p>
+                                <p>Humidity: <span id="humidity"></span></p>
+                                <p>Wind Speed: <span id="wind"></span></p>
+                                <p>UV index: <span id="uv-index"></span></p>
+                            </div>
+                        </div>
                     </section>
                     <!-- City 5 day forecast -->
                     <section>
                         <!-- header tag -->
-                        <div>
-                            <h3>5-Day Forecast:</h3>
-                        </div>
-                        <div>
+                        <div class="card five-day-forecast">
+                            <h5>5-Day Forecast:</h5>
                             <!-- day 1 -->
-                            <div class="card">
-                                <h5><span>16/8/2019</span></h5>
-                                <img scr="" alt="Weather Image"></img>
-                                <p>Temp: <span>90.9</span></p>
-                                <p>Humidit: <span>41%</span></p>
-                            </div>
-                            <!-- day 2 -->
-                            <div class="card">
-                                <h5><span>16/8/2019</span></h5>
-                                <img scr="" alt="Weather Image"></img>
-                                <p>Temp: <span>90.9</span></p>
-                                <p>Humidit: <span>41%</span></p>
-                            </div>
-                            <!-- day 3 -->
-                            <div class="card">
-                                <h5><span>16/8/2019</span></h5>
-                                <img scr="" alt="Weather Image"></img>
-                                <p>Temp: <span>90.9</span></p>
-                                <p>Humidit: <span>41%</span></p>
-                            </div>
-                            <!-- day 4 -->
-                            <div class="card">
-                                <h5><span>16/8/2019</span></h5>
-                                <img scr="" alt="Weather Image"></img>
-                                <p>Temp: <span>90.9</span></p>
-                                <p>Humidit: <span>41%</span></p>
-                            </div>
-                            <!-- day 5 -->
-                            <div class="card">
-                                <h5><span>16/8/2019</span></h5>
-                                <img scr="" alt="Weather Image"></img>
-                                <p>Temp: <span>90.9</span></p>
-                                <p>Humidit: <span>41%</span></p>
+
+                            <div id="five-day-forecast" class="list-group-horizontal">
+                                <div class="list-group-item active">
+                                    <h5><span>16/8/2019</span></h5>
+                                    <img scr="" alt="Weather Image"></img>
+                                    <p>Temp: <span>90.9</span></p>
+                                    <p>Humidit: <span>41%</span></p>
+                                </div>
+                                <div class="list-group-item active">
+                                    <h5><span>16/8/2019</span></h5>
+                                    <img scr="" alt="Weather Image"></img>
+                                    <p>Temp: <span>90.9</span></p>
+                                    <p>Humidit: <span>41%</span></p>
+                                </div>
+                                <div class="list-group-item active">
+                                    <h5><span>16/8/2019</span></h5>
+                                    <img scr="" alt="Weather Image"></img>
+                                    <p>Temp: <span>90.9</span></p>
+                                    <p>Humidit: <span>41%</span></p>
+                                </div>
+                                <div class="list-group-item active">
+                                    <h5><span>16/8/2019</span></h5>
+                                    <img scr="" alt="Weather Image"></img>
+                                    <p>Temp: <span>90.9</span></p>
+                                    <p>Humidit: <span>41%</span></p>
+                                </div>
+                                <div class="list-group-item active">
+                                    <h5><span>16/8/2019</span></h5>
+                                    <img scr="" alt="Weather Image"></img>
+                                    <p>Temp: <span>90.9</span></p>
+                                    <p>Humidit: <span>41%</span></p>
+                                </div>
                             </div>
                         </div>
                     </section>
-                </section>
+                </div>
             </div>
-        </div>
-    </main>
-    <footer class="footer">
+        </main>
+        <footer class="footer">
 
-    </footer>
+        </footer>
+    </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>
