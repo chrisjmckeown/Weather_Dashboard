@@ -7,7 +7,6 @@ $(document).ready(function () {
     // search list and default variables
     var recentSearchList = [];
     var defaultCity = "Auckland, NZ"; // set Auckland, NZ as default incase location access is not granted
-    var today = moment().format('DD/MM/YYYY');
     getDefaultCityCountry();
 
     // use ipinfo to source the local city and country
@@ -32,15 +31,21 @@ $(document).ready(function () {
         //renderSearchList();
         if (recentSearchList.length === 0 || recentSearchList === null) {
             // if the list is empty then find the default city
-            findCity(defaultCity);
+            // display current weather
+            currentWeather(defaultCity);
+            // display the 5 day forecast
+            fiveDayForecast(defaultCity);
         }
         else {
             // find the last city in the list, last searched item
-            findCity(recentSearchList[recentSearchList.length - 1]);
+            // display current weather
+            currentWeather(recentSearchList[recentSearchList.length - 1]);
+            // display the 5 day forecast
+            fiveDayForecast(recentSearchList[recentSearchList.length - 1]);
         }
     };
 
-    // both loadPage and findCity will call this, to save re-rendering the page
+    // both loadPage and currentWeather will call this, to save re-rendering the page
     function renderSearchList() {
         $("#recent-search-list").empty();
         recentSearchList.forEach(function (city) {
@@ -67,6 +72,7 @@ $(document).ready(function () {
 
     // saves the to localStorage
     function setStoredSearchList(city) {
+        console.log(recentSearchList);
         // see if an existing entry exists
         var foundCity = recentSearchList.find(x => x === city);
         // if found then move the existing in the array, else create an new
@@ -98,29 +104,55 @@ $(document).ready(function () {
     // Update the today variable to the selected date and load the page
     $(document.body).on('click', "#recent-searched-item", function (event) {
         event.preventDefault();
-        findCity(this.textContent);
+        // display current weather
+        currentWeather(this.textContent);
+        // display the 5 day forecast
+        fiveDayForecast(this.textContent);
     });
 
     // Get the city input and call function to find the city
     $("#select-city-btn").on("click", function (event) {
         event.preventDefault();
         var city = $("#city-input").val().trim();
-        findCity(city);
+        // display current weather
+        currentWeather(city);
+        // display the 5 day forecast
+        fiveDayForecast(city);
     });
 
     // clear the search history and 
     $("#clear-city-btn").on("click", function (event) {
-        // clear the page data
-        reset5DayForecast();
+        event.preventDefault();
         // empty the search list and then add in a default city
         recentSearchList = [];
-        findCity(city);
+        // display current weather
+        currentWeather(defaultCity);
+        // display the 5 day forecast
+        fiveDayForecast(defaultCity);
     });
 
-    function findCity(city) {
+    function currentWeather(city) {
         // Create an AJAX call to retrieve data Log the data in console
-        // This is for paid accounts only?
-        // var query5dayURL = "https://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + "&cnt=6&appid=" + OpenWeatherMapAPIKey;
+        var queryParameters = {
+            q: city,
+            units: "metric",
+            appid: OpenWeatherMapAPIKey,
+        };
+        var queryString = $.param(queryParameters);
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + queryString;
+        // Call with a get method
+        $.ajax({ url: queryURL, method: 'get' }).then(function (response) {
+            // if successfull then store the result
+            setStoredSearchList(response.name + ", " + response.sys.country);
+            // display the conditions for the today
+            recordToday(response);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+
+    function fiveDayForecast(city) {
+        // Create an AJAX call to retrieve data Log the data in console
         var queryParameters = {
             q: city,
             units: "metric",
@@ -128,15 +160,10 @@ $(document).ready(function () {
         };
         var queryString = $.param(queryParameters);
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + queryString;
-        //var query5dayURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=metric&appid=" + OpenWeatherMapAPIKey;
         // Call with a get method
         $.ajax({ url: queryURL, method: 'get' }).then(function (response) {
-            // if successfull then store the result
-            setStoredSearchList(response.city.name + ", " + response.city.country);
             // reset the div containing the 5 day forcast
             reset5DayForecast();
-            // display todays conditions
-            recordToday(response);
             // display the conditions for the next 5 days
             loopResponse(response.list, date);
         }).catch(function (err) {
@@ -147,22 +174,22 @@ $(document).ready(function () {
     // display todays conditions
     function recordToday(response) {
         // Populate the city and Country (with out the country it is hard to know which country the city is in)
-        $("#city").text(response.city.name + " (" + response.city.country + ")");
+        $("#city").text(response.name + " (" + response.sys.country + ")");
         // use the first item in the list for the first display
         // use moment to formate the date.
-        var date = moment(response.list[0].dt_txt).format('DD/MM/YYYY');
+        var date = moment().format('DD/MM/YYYY');
         $("#date").text("(" + date + ")");
         // get the icon code and build the URL and add to the image.
-        var iconCode = response.list[0].weather[0].icon;
+        var iconCode = response.weather[0].icon;
         var iconurl = "http://openweathermap.org/img/w/" + iconCode + ".png";
         $("#weather-icon").attr("src", iconurl);
         // apply the other properties
-        $("#temp").text(response.list[0].main.temp + ' ℃');
-        $("#humidity").text(response.list[0].main.humidity + ' %');
-        $("#wind").text(response.list[0].wind.speed + " km/h");
+        $("#temp").text(response.main.temp + ' ℃');
+        $("#humidity").text(response.main.humidity + ' %');
+        $("#wind").text(response.wind.speed + " km/h");
         // get the lon and lat to get the UV index, call the function to process
-        var lat = response.city.coord.lat;
-        var lon = response.city.coord.lon;
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
 
         setUV(lon, lat);
     }
@@ -179,7 +206,7 @@ $(document).ready(function () {
             if (tempDate === date) {
                 return;
             }
-            // if the hour is midday then display the conditions
+            // if the hour is midday then display the conditions. It looks like when the api is called, the result start at the next 3hr slot 
             if (hour === "12") {
                 createDay(item);
                 count++;
