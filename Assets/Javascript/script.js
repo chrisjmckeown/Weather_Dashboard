@@ -7,6 +7,8 @@ $(document).ready(function () {
     // search list and default variables
     var recentSearchList = [];
     var defaultCity = "Auckland, NZ"; // set Auckland, NZ as default incase ipinfo.io access is not granted
+    var today = moment().format('DD/MM/YYYY');
+
     getDefaultCityCountry();
 
     // use ipinfo to source the local city and country
@@ -34,15 +36,11 @@ $(document).ready(function () {
         // if the list is empty then find the default city, else...
         if (recentSearchList.length === 0 || recentSearchList === null) {
             // display current weather
-            getTodaysConditions(defaultCity);
-            // display the 5 day forecast
-            getFiveDayForecast(defaultCity);
+            getConditions(defaultCity);
         }
         else { // find the last city in the list, the last searched item
             // display current weather
-            getTodaysConditions(recentSearchList[recentSearchList.length - 1]);
-            // display the 5 day forecast
-            getFiveDayForecast(recentSearchList[recentSearchList.length - 1]);
+            getConditions(recentSearchList[recentSearchList.length - 1]);
         }
     };
 
@@ -99,9 +97,7 @@ $(document).ready(function () {
     $(document.body).on('click', "#recent-searched-item", function (event) {
         event.preventDefault();
         // display current weather
-        getTodaysConditions(this.textContent);
-        // display the 5 day forecast
-        getFiveDayForecast(this.textContent);
+        getConditions(this.textContent);
     });
 
     // Get the city input and call function to find the city
@@ -109,9 +105,7 @@ $(document).ready(function () {
         event.preventDefault();
         var city = $("#city-input").val().trim();
         // display current weather
-        getTodaysConditions(city);
-        // display the 5 day forecast
-        getFiveDayForecast(city);
+        getConditions(city);
     });
 
     // clear the search history and 
@@ -120,15 +114,13 @@ $(document).ready(function () {
         // empty the search list and then add in a default city
         recentSearchList = [];
         // display current weather
-        getTodaysConditions(defaultCity);
-        // display the 5 day forecast
-        getFiveDayForecast(defaultCity);
+        getConditions(defaultCity);
         // clear the input text
         $("#city-input").val("");
     });
 
     // ajax query to get the todays conditions
-    function getTodaysConditions(city) {
+    function getConditions(city) {
         // Create an AJAX call to retrieve data
         var queryParameters = {
             q: city,
@@ -136,15 +128,18 @@ $(document).ready(function () {
             appid: OpenWeatherMapAPIKey,
         };
         var queryString = $.param(queryParameters);
+        // Call weather with City name to get the lat and lon
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + queryString;
         // Call with a get method
         $.ajax({ url: queryURL, method: 'get' }).then(function (response) {
             // if successfull then store the result
             setStoredSearchList(response.name + ", " + response.sys.country);
+            // Populate the city and Country (with out the country it is hard to know which country the city is in)
+            $("#city").text(response.name + " (" + response.sys.country + ")");
             //render the search list with recent search item at the top
             renderSearchList();
-            // display the conditions for the today
-            renderTodaysConditions(response);
+            // get the 7 day forecast based on the lon and lat. 7 day forecast only works works with lon and lat.
+            getSevenDayForecast(response.coord.lon, response.coord.lat);
             // clear the input text
             $("#city-input").val("");
         }).catch(function (err) {
@@ -152,88 +147,52 @@ $(document).ready(function () {
         });
     };
 
-    // display todays conditions
-    function renderTodaysConditions(response) {
-        // Populate the city and Country (with out the country it is hard to know which country the city is in)
-        $("#city").text(response.name + " (" + response.sys.country + ")");
-        // use the first item in the list for the first display
-        // use moment to formate the date.
-        var date = moment().format('DD/MM/YYYY');
-        $("#date").text("(" + date + ")");
-        // get the icon code and build the URL and add to the image.
-        var iconCode = response.weather[0].icon;
-        var iconurl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-        $("#weather-icon").attr("src", iconurl);
-        // apply the other properties
-        $("#temp").text(response.main.temp + ' ℃');
-        $("#humidity").text(response.main.humidity + ' %');
-        $("#wind").text(response.wind.speed + " km/h");
-        // get the lon and lat to get the UV index, call the function to process
-        var lat = response.coord.lat;
-        var lon = response.coord.lon;
-
-        renderUV(lon, lat);
-    }
-
     // ajax query to get the five day forecast
-    function getFiveDayForecast(city) {
+    function getSevenDayForecast(lon, lat) {
         // Create an AJAX call to retrieve data Log the data in console
         var queryParameters = {
-            q: city,
+            lat: lat,
+            lon: lon,
+            exclude: "minutely,hourly",
             units: "metric",
             appid: OpenWeatherMapAPIKey,
         };
         var queryString = $.param(queryParameters);
-        var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + queryString;
+        var queryURL = "https://api.openweathermap.org/data/2.5/onecall?" + queryString;
         // Call with a get method
         $.ajax({ url: queryURL, method: 'get' }).then(function (response) {
-            // reset the div containing the 5 day forcast
-            $("#five-day-forecast").empty();
-            // display the conditions for the next 5 days
-            extractDays(response.list);
+            // display todays current conditions
+            renderTodaysConditions(response.current);
+            // display the forcast
+            getFiveDayForecast(response.daily)
         }).catch(function (err) {
             console.log(err);
         });
     };
 
-    // Loop through an array, extracting the data at midday or the last item if there not 5 midday items in the record
-    function extractDays(list) {
-        // counter to check 5 days are displayed
-        var count = 0;
+    // display todays conditions
+    function renderTodaysConditions(current) {
+        // use moment to formate the date.
         var date = moment().format('DD/MM/YYYY');
-        var recordedDays = [];
-        // iterate over each item
-        list.forEach(function (item) {
-            var tempDate = moment(item.dt_txt).format('DD/MM/YYYY');
-            var hour = moment(item.dt_txt).format('HH');
-            // if the day is today then move to the next item using return
-            if (tempDate === date) {
-                return;
-            }
-            // if the hour is midday then display the conditions. It looks like when the api is called, the result start at the next 3hr slot 
-            if (hour === "12") {
-                renderDay(item);
-                count++;
-                recordedDays.push(tempDate);
-            }
-        });
-        // if there less than 5 days recorded then display the last condition in the list if the last conditions day is not already displayed
-        if (count < 5) {
-            var item = list[list.length - 1];
-            var tempDate = moment(item.dt_txt).format('DD/MM/YYYY');
-            if (!recordedDays.includes(tempDate)) {
-                renderDay(item);
-            }
-            else {
-                // display a placeholder item with 
-                tempDate = moment(item.dt_txt).add(1, 'days').format('DD/MM/YYYY');
-                var $day = $("<div>");
-                $day.addClass("list-group-item active")
-                $day.append('<h5>' + tempDate + '</h5>');
-                $day.append('<p>Information not currently available.</p>');
-                $day.append('<p>Please try again latter.</p>');
-                $("#five-day-forecast").append($day);
-            }
+        $("#date").text("(" + date + ")");
+        // get the icon code and build the URL and add to the image.
+        var iconCode = current.weather[0].icon;
+        var iconurl = "https://openweathermap.org/img/w/" + iconCode + ".png";
+        $("#weather-icon").attr("src", iconurl);
+        // apply the other properties
+        $("#temp").text(current.temp + ' ℃');
+        $("#humidity").text(current.humidity + ' %');
+        $("#wind").text(current.wind_speed + " km/h");
+        renderUV(current.uvi);
+    }
+
+    // Loop through an array, extracting the day
+    function getFiveDayForecast(list) {
+        // reset the div containing the 5 day forcast
+        $("#five-day-forecast").empty();
+        // iterate over list, starting at 2 (missing today), and finishing at 5th day
+        for (i = 1; i < 6; i++) {
+            renderDay(list[i]);
         }
     };
 
@@ -242,16 +201,14 @@ $(document).ready(function () {
         // create a div to append all the data too
         var $day = $("<div>");
         // gather the data into variables
-        var dayDate = moment(item.dt_txt).format('DD/MM/YYYY');
-        var hour = moment(item.dt_txt).format('HH:00:00');
+        var dayDate = moment.unix(item.dt).format('DD/MM/YYYY');
         var dayIconCode = item.weather[0].icon;
-        var dayIconurl = "http://openweathermap.org/img/w/" + dayIconCode + ".png";
-        var dayTemp = item.main.temp;
-        var dayHumidity = item.main.humidity;
+        var dayIconurl = "https://openweathermap.org/img/w/" + dayIconCode + ".png";
+        var dayTemp = item.temp.max;
+        var dayHumidity = item.humidity;
         $day.addClass("list-group-item active")
         // append the gathered data to the div
         $day.append('<h5>' + dayDate + '</h5>');
-        $day.append('<p>At: ' + hour + '</p>');
         $day.append('<img src="' + dayIconurl + '" alt="Weather Image"></img>');
         $day.append('<p>Temp: ' + dayTemp + ' &#8451;</p>');
         $day.append('<p>Humidity: ' + dayHumidity + ' &#x25;</p>');
@@ -260,37 +217,23 @@ $(document).ready(function () {
     };
 
     // color code the UV conditions
-    function renderUV(lon, lat) {
-        // create the uv query
-        var queryParameters = {
-            appid: OpenWeatherMapAPIKey,
-            lat: lat,
-            lon: lon,
-        };
-        var queryString = $.param(queryParameters);
-        var queryURL = "https://api.openweathermap.org/data/2.5/uvi?" + queryString;
-        //var uvQuery = "https://api.openweathermap.org/data/2.5/uvi?appid=" + OpenWeatherMapAPIKey + "&lat=" + lat + "&lon=" + lon;
-        $.ajax({ url: queryURL, method: 'get' }).then(function (response) {
-            var index = parseFloat(response.value);
-            // based on the index range, set an attribute call index this will be used in css to color the background
-            $("#uv-index").text(response.value);
-            if (index < 3) {
-                $("#uv-index").attr("index", "green");
-            }
-            else if (index < 6) {
-                $("#uv-index").attr("index", "yellow");
-            }
-            else if (index < 8) {
-                $("#uv-index").attr("index", "orange");
-            }
-            else if (index < 11) {
-                $("#uv-index").attr("index", "red");
-            }
-            else {
-                $("#uv-index").attr("index", "violet");
-            }
-        }).catch(function (err) {
-            console.log(err);
-        });
+    function renderUV(index) {
+        // based on the index range, set an attribute call index this will be used in css to color the background
+        $("#uv-index").text(index);
+        if (index < 3) {
+            $("#uv-index").attr("index", "green");
+        }
+        else if (index < 6) {
+            $("#uv-index").attr("index", "yellow");
+        }
+        else if (index < 8) {
+            $("#uv-index").attr("index", "orange");
+        }
+        else if (index < 11) {
+            $("#uv-index").attr("index", "red");
+        }
+        else {
+            $("#uv-index").attr("index", "violet");
+        }
     };
 });
