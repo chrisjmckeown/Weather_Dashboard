@@ -15,47 +15,41 @@
 
 <body>
     <div class="container-fluid">
-        <!-- header banner -->
-        <header class="jumbotron text-center">
-            <h1>Weather Dashboard</h1>
+        <!-- Semantic header -->
+        <header>
+            <!-- Semantic navigation using bootstrap -->
+            <nav class="navbar justify-content-center navbar-dark bg-dark">
+                <span class="navbar-brand">Weather Dashboard</span>
+            </nav>
         </header>
-
+        <!-- Semantic main body -->
         <main>
             <div class="row">
                 <!-- Search bar -->
                 <div class="col-md-4 col-lg-3">
-                    <aside>
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Seach for a City:</h5>
+                    <aside class="jumbotron">
+                        <h5>Seach for a City:</h5>
+                        <!-- City Select Box -->
+                        <form id="city-form">
+                            <!-- Text Input Box -->
+                            <div class="form-group">
+                                <input class="form-control" type="text" id="city-input">
                             </div>
-                            <div class="card-body">
-                                <!-- City Select Box -->
-                                <form id="city-form">
-                                    <!-- Text Input Box -->
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" id="city-input">
-                                    </div>
-                                    <!-- Submit Button -->
-                                    <div class="form-group">
-                                        <button id="select-city-btn" class="btn btn-primary form-control">
-                                            <i class="fas fa-search"></i> Search
-                                        </button>
-                                    </div>
-                                    <div class="form-group">
-                                        <button id="clear-city-btn" class="btn btn-primary form-control">
-                                            <i class="fas fa-trash-alt"></i> Clear
-                                        </button>
-                                    </div>
-                                </form>
+                            <!-- Submit Button -->
+                            <div class="form-group">
+                                <button id="select-city-btn" class="btn btn-primary form-control">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
                             </div>
-                        </div>
-                        <!-- recent searches -->
-                        <div class="card">
-                            <div id="recent-searches">
-                                <ul id="recent-search-list" class="list-group">
-                                </ul>
+                            <div class="form-group">
+                                <button id="clear-city-btn" class="btn btn-primary form-control">
+                                    <i class="fas fa-trash-alt"></i> Clear
+                                </button>
                             </div>
+                        </form>
+                        <div id="recent-searches">
+                            <ul id="recent-search-list" class="list-group">
+                            </ul>
                         </div>
                     </aside>
                 </div>
@@ -90,15 +84,28 @@
                 </div>
             </div>
         </main>
-        <footer class="text-center">
-            <hr>
-            <h6>Made with lots of love <i class="fas fa-heart"></i></h6>
+        <!-- Semantic main footer -->
+        <footer class="footer">
+            <nav class="navbar navbar-dark bg-dark">
+                <!-- div for social media -->
+                <div class="media">
+                    <a href="https://www.linkedin.com/in/chrisjmckeown/" target="_blank"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/ChrisMckeown6" target="_blank"><i
+                            class="fab fa-twitter-square"></i></a>
+                    <a href="https://www.facebook.com/christopher.j.mckeown.3" target="_blank"><i
+                            class="fab fa-facebook-square"></i></a>
+                    <a href="https://github.com/chrisjmckeown" target="_blank"> <i class="fab fa-github-square"></i></a>
+                </div>
+                <div class="copyright">
+                    <span class="navbar-brand">&#169; Copyright - Chris Mckeown</span>
+                </div>
+            </nav>
         </footer>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>
-
 </body>
 
 </html>
