@@ -238,13 +238,13 @@ $(document).ready(function () {
         }
     };
 
-//#region code from here: https://github.com/google/maps-for-work-samples/tree/master/samples/maps/OpenWeatherMapLayer
+    //#region code from here: https://github.com/google/maps-for-work-samples/tree/master/samples/maps/OpenWeatherMapLayer
     var map;
     var geoJSON;
     var request;
     var gettingData = false;
 
-    function initialize(lon,lat) {
+    function initialize(lon, lat) {
         var mapOptions = {
             zoom: 10,
             center: new google.maps.LatLng(lat, lon),
@@ -300,7 +300,7 @@ $(document).ready(function () {
     // Make the weather request
     var getWeather = function (northLat, eastLng, southLat, westLng) {
         gettingData = true;
-        var requestString = "http://api.openweathermap.org/data/2.5/box/city?bbox="
+        var requestString = "https://api.openweathermap.org/data/2.5/box/city?bbox="
             + westLng + "," + northLat + "," //left top
             + eastLng + "," + southLat + "," //right bottom
             + map.getZoom()
@@ -341,7 +341,7 @@ $(document).ready(function () {
                 windSpeed: weatherItem.wind.speed,
                 windDegrees: weatherItem.wind.deg,
                 windGust: weatherItem.wind.gust,
-                icon: "http://openweathermap.org/img/w/"
+                icon: "https://openweathermap.org/img/w/"
                     + weatherItem.weather[0].icon + ".png",
                 coordinates: [weatherItem.coord.Lon, weatherItem.coord.Lat]
             },
@@ -381,5 +381,5 @@ $(document).ready(function () {
             map.data.remove(feature);
         });
     };
-//#endregion
+    //#endregion
 });
