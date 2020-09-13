@@ -26,7 +26,7 @@ The following image demonstrates the application functionality:
 
 ## Technologies Utilized
 Primary technologies:
-* Web API's (OpenWeather API)
+* Web API's (OpenWeather API, google maps, and ipinfo.io)
 * Moment.js
 * jQuery
 * Javascript

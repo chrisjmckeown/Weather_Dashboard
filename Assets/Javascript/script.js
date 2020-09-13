@@ -365,7 +365,7 @@ $(document).ready(function () {
     };
 
     // Add the markers to the map
-    var drawIcons = function (weather) {
+    var drawIcons = function (geoJSON) {
         map.data.addGeoJson(geoJSON);
         // Set the flag to finished
         gettingData = false;
