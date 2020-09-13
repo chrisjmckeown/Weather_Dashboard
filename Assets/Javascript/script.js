@@ -247,7 +247,10 @@ $(document).ready(function () {
     function initialize(lon,lat) {
         var mapOptions = {
             zoom: 10,
-            center: new google.maps.LatLng(lat, lon)
+            center: new google.maps.LatLng(lat, lon),
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
         };
 
         map = new google.maps.Map(document.getElementById('google-map'),
