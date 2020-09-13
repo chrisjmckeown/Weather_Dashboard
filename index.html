@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <title>Weather Dashboard</title>
+    <!-- script to load google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkb96g-9_ZHg68di_g4cUEDTA5pEi9Ef8">        </script>
 </head>
 
 <body>
@@ -66,10 +68,14 @@
                                         alt="Weather Image"></h3>
                             </div>
                             <div class="card-body">
-                                <p>Temperature: <span id="temp"></span></p>
-                                <p>Humidity: <span id="humidity"></span></p>
-                                <p>Wind Speed: <span id="wind"></span></p>
-                                <p>UV index: <span id="uv-index" class="uv-index"></span></p>
+                                <div class="float-left">
+                                    <p>Temperature: <span id="temp"></span></p>
+                                    <p>Humidity: <span id="humidity"></span></p>
+                                    <p>Wind Speed: <span id="wind"></span></p>
+                                    <p>UV index: <span id="uv-index" class="uv-index"></span></p>
+                                </div>
+                                <!--The div element for the map -->
+                                <div id="google-map" class="google-map"></div>
                             </div>
                         </div>
                     </section>
@@ -88,9 +94,10 @@
 
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>
+
 </body>
 
 </html>

@@ -44,3 +44,34 @@
 .five-day-forecast{
     padding-left:20px
 }
+/* Set the size of the div element that contains the map */
+.google-map {
+    float:right;
+    height: 200px;
+    width: 500px;
+}
+
+/* media adjustments to work on phone, ipad and PC */
+@media (max-width: 1024px) {
+    .google-map {
+        float:right;
+        height: 200px;
+        width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .google-map {
+        float:right;
+        height: 200px;
+        width: 450px;
+    }
+}
+
+@media (max-width: 550px) {
+    .google-map {
+        float:right;
+        height: 200px;
+        width: 400px;
+    }
+}
