@@ -207,7 +207,7 @@ $(document).ready(function () {
         var dayIconurl = "https://openweathermap.org/img/w/" + dayIconCode + ".png";
         var dayTemp = item.temp.max;
         var dayHumidity = item.humidity;
-        $day.addClass("list-group-item active")
+         $day.addClass("day-item")
         // append the gathered data to the div
         $day.append('<h5>' + dayDate + '</h5>');
         $day.append('<img src="' + dayIconurl + '" alt="Weather Image"></img>');

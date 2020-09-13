@@ -15,7 +15,7 @@ body,
 
 main{
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 50px;
 }
 
 .container-fluid{
@@ -49,16 +49,25 @@ header .navbar-brand{
 
 /* five day forecast style */
 .five-day-forecast{
-    padding-left:20px
+    padding-left:20px;
+	display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: 100%;
 }
-.active{
+/* .active{ */
+    .day-item{
     box-sizing: border-box;
-    float: left;
     margin-right: 20px;
     margin-bottom: 20px;
-    border-radius: 6px!important;
+    border-radius: 6px;
     width: 150px;
     height: 180px;
+
+    background-color: rgb(31, 111, 192);
+    color: white;
+    padding: 10px;
 }
 
 /* Set the size of the div element that contains the map */
