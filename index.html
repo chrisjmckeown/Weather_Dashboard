@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid fixed-top">
         <!-- Semantic header -->
         <header>
             <!-- Semantic navigation using bootstrap -->
@@ -22,87 +22,85 @@
                 <span class="navbar-brand">Weather Dashboard</span>
             </nav>
         </header>
-        <!-- Semantic main body -->
-        <main>
-            <div class="row">
-                <!-- Search bar -->
-                <div class="col-md-4 col-lg-3">
-                    <aside class="jumbotron">
-                        <h5>Seach for a City:</h5>
-                        <!-- City Select Box -->
-                        <form id="city-form">
-                            <!-- Text Input Box -->
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="city-input">
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="form-group">
-                                <button id="select-city-btn" class="btn btn-primary form-control">
-                                    <i class="fas fa-search"></i> Search
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <button id="clear-city-btn" class="btn btn-primary form-control">
-                                    <i class="fas fa-trash-alt"></i> Clear
-                                </button>
-                            </div>
-                        </form>
-                        <div id="recent-searches">
-                            <ul id="recent-search-list" class="list-group">
-                            </ul>
-                        </div>
-                    </aside>
-                </div>
-                <!-- City current conditions -->
-                <div class="col-md-8 col-lg-9">
-                    <section>
-                        <div class="card">
-                            <div class="card-header">
-                                <h3><span id="city"></span><span id="date"></span><img id="weather-icon" src="#"
-                                        alt="Weather Image"></h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="float-left">
-                                    <p>Temperature: <span id="temp"></span></p>
-                                    <p>Humidity: <span id="humidity"></span></p>
-                                    <p>Wind Speed: <span id="wind"></span></p>
-                                    <p>UV index: <span id="uv-index" class="uv-index"></span></p>
-                                </div>
-                                <!--The div element for the map -->
-                                <div id="google-map" class="google-map"></div>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- City 5 day forecast -->
-                    <section>
-                        <!-- header tag -->
-                        <div class="card five-day-forecast">
-                            <h5>5-Day Forecast:</h5>
-                            <div id="five-day-forecast" class="list-group-horizontal"> </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </main>
-        <!-- Semantic main footer -->
-        <footer class="footer">
-            <nav class="navbar navbar-dark bg-dark">
-                <!-- div for social media -->
-                <div class="media">
-                    <a href="https://www.linkedin.com/in/chrisjmckeown/" target="_blank"><i
-                            class="fab fa-linkedin"></i></a>
-                    <a href="https://twitter.com/ChrisMckeown6" target="_blank"><i
-                            class="fab fa-twitter-square"></i></a>
-                    <a href="https://www.facebook.com/christopher.j.mckeown.3" target="_blank"><i
-                            class="fab fa-facebook-square"></i></a>
-                    <a href="https://github.com/chrisjmckeown" target="_blank"> <i class="fab fa-github-square"></i></a>
-                </div>
-                <div class="copyright">
-                    <span class="navbar-brand">&#169; Copyright - Chris Mckeown</span>
-                </div>
-            </nav>
-        </footer>
     </div>
+    <!-- Semantic main body -->
+    <main class="container-fluid">
+        <div class="row">
+            <!-- Search bar -->
+            <div class="col-md-4 col-lg-3">
+                <aside class="jumbotron">
+                    <h5>Seach for a City:</h5>
+                    <!-- City Select Box -->
+                    <form id="city-form">
+                        <!-- Text Input Box -->
+                        <div class="form-group">
+                            <input class="form-control" type="text" id="city-input">
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="form-group">
+                            <button id="select-city-btn" class="btn btn-primary form-control">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <button id="clear-city-btn" class="btn btn-primary form-control">
+                                <i class="fas fa-trash-alt"></i> Clear
+                            </button>
+                        </div>
+                    </form>
+                    <div id="recent-searches">
+                        <ul id="recent-search-list" class="list-group">
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+            <!-- City current conditions -->
+            <div class="col-md-8 col-lg-9">
+                <section>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><span id="city"></span><span id="date"></span><img id="weather-icon" src="#"
+                                    alt="Weather Image"></h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="float-left">
+                                <p>Temperature: <span id="temp"></span></p>
+                                <p>Humidity: <span id="humidity"></span></p>
+                                <p>Wind Speed: <span id="wind"></span></p>
+                                <p>UV index: <span id="uv-index" class="uv-index"></span></p>
+                            </div>
+                            <!--The div element for the map -->
+                            <div id="google-map" class="google-map"></div>
+                        </div>
+                    </div>
+                </section>
+                <!-- City 5 day forecast -->
+                <section>
+                    <!-- header tag -->
+                    <div class="card five-day-forecast">
+                        <h5>5-Day Forecast:</h5>
+                        <div id="five-day-forecast" class="list-group-horizontal"> </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- Semantic main footer -->
+    <footer class="footer container-fluid fixed-bottom">
+        <nav class="navbar navbar-dark bg-dark">
+            <!-- div for social media -->
+            <div class="media">
+                <a href="https://www.linkedin.com/in/chrisjmckeown/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/ChrisMckeown6" target="_blank"><i class="fab fa-twitter-square"></i></a>
+                <a href="https://www.facebook.com/christopher.j.mckeown.3" target="_blank"><i
+                        class="fab fa-facebook-square"></i></a>
+                <a href="https://github.com/chrisjmckeown" target="_blank"> <i class="fab fa-github-square"></i></a>
+            </div>
+            <div class="copyright">
+                <span class="navbar-brand">&#169; Copyright - Chris Mckeown</span>
+            </div>
+        </nav>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>

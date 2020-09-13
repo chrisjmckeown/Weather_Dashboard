@@ -12,6 +12,12 @@ body,
   margin: 0;
   padding: 0;
 }
+
+main{
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
 .container-fluid{
     max-width:1350px
 }
