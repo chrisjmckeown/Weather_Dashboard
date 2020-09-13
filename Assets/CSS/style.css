@@ -20,15 +20,6 @@
 .container-fluid{
     max-width:1350px
 }
-.active{
-    box-sizing: border-box;
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    border-radius: 6px!important;
-    width: 150px;
-    height: 180px;
-}
 .card{
     margin-bottom: 20px;
 }
@@ -37,6 +28,15 @@
     color: white;
     padding-top: 15px !important;
     padding-bottom: 15px !important;
+}
+.active{
+    box-sizing: border-box;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px!important;
+    width: 150px;
+    height: 180px;
 }
 .clickme{
     cursor: pointer;
@@ -52,26 +52,28 @@
 }
 
 /* media adjustments to work on phone, ipad and PC */
-@media (max-width: 1024px) {
-    .google-map {
-        float:right;
-        height: 200px;
-        width: 500px;
-    }
-}
-
 @media (max-width: 768px) {
     .google-map {
-        float:right;
-        height: 200px;
         width: 450px;
     }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 550px) { 
+    .jumbotron h1 {
+        font-size: 20px;
+    }     
+    .card-header {
+        font-size: 15px;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+    .card-header h3 {
+        font-size: 15px;
+    }
     .google-map {
-        float:right;
-        height: 200px;
-        width: 400px;
+        width: 250px;
+    }
+    .active{
+        width: 250px;
     }
 }
