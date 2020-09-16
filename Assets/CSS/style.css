@@ -12,12 +12,10 @@ body,
   margin: 0;
   padding: 0;
 }
-
 main{
     padding-top: 100px;
     padding-bottom: 50px;
 }
-
 .container-fluid{
     max-width:1350px
 }
@@ -33,6 +31,9 @@ header .navbar-brand{
 }
 
 /* aside style */
+.input-group-btn {
+    margin-left: 10px;
+}
 .list-group-item:hover{
     background-color:  rgb(78, 80, 83);
     color: white;

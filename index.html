@@ -10,7 +10,7 @@
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <title>Weather Dashboard</title>
     <!-- script to load google maps -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkb96g-9_ZHg68di_g4cUEDTA5pEi9Ef8">        </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkb96g-9_ZHg68di_g4cUEDTA5pEi9Ef8"></script>
 </head>
 
 <body>
@@ -34,13 +34,13 @@
                     <form id="city-form">
                         <!-- Text Input Box -->
                         <div class="form-group">
-                            <input class="form-control" type="text" id="city-input">
-                        </div>
-                        <!-- Submit Button -->
-                        <div class="form-group">
-                            <button id="select-city-btn" class="btn btn-primary form-control">
-                                <i class="fas fa-search"></i> Search
-                            </button>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="city-input" placeholder="City, Country Code, i.e. Melbourne, AU">
+                                <span class="input-group-btn">
+                                    <button id="select-city-btn" class="btn btn-primary" type="button">
+                                        <i class="fas fa-search"></i></button>
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <button id="clear-city-btn" class="btn btn-primary form-control">
@@ -101,7 +101,7 @@
             </div>
         </nav>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./Assets/Javascript/script.js"></script>
 </body>

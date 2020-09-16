@@ -141,7 +141,7 @@ $(document).ready(function () {
             getSevenDayForecast(response.coord.lon, response.coord.lat);
             // clear the input text
             $("#city-input").val("");
-
+            // setting up the google map with the lon and lat
             initialize(response.coord.lon, response.coord.lat);
         }).catch(function (err) {
             console.log(err);
@@ -207,7 +207,7 @@ $(document).ready(function () {
         var dayIconurl = "https://openweathermap.org/img/w/" + dayIconCode + ".png";
         var dayTemp = item.temp.max;
         var dayHumidity = item.humidity;
-         $day.addClass("day-item")
+        $day.addClass("day-item")
         // append the gathered data to the div
         $day.append('<h5>' + dayDate + '</h5>');
         $day.append('<img src="' + dayIconurl + '" alt="Weather Image"></img>');
@@ -238,13 +238,15 @@ $(document).ready(function () {
         }
     };
 
-    //#region code from here: https://github.com/google/maps-for-work-samples/tree/master/samples/maps/OpenWeatherMapLayer
+    //#region google map integration
+    // variables for the map
     var map;
     var geoJSON;
-    var request;
     var gettingData = false;
 
+    // initializing the map
     function initialize(lon, lat) {
+        // an object to hold the map options, zoomed in 10 and turning off the controls, street view and fullscreen, as I want users to just view the weather icons
         var mapOptions = {
             zoom: 10,
             center: new google.maps.LatLng(lat, lon),
@@ -252,45 +254,49 @@ $(document).ready(function () {
             streetViewControl: false,
             fullscreenControl: false,
         };
-
-        map = new google.maps.Map(document.getElementById('google-map'),
-            mapOptions);
+        // putting the map in the div with the above settings
+        map = new google.maps.Map($('#google-map')[0], mapOptions);
         // Add interaction listeners to make weather requests
         google.maps.event.addListener(map, 'idle', checkIfDataRequested);
 
         // Sets up and populates the info window with details
         map.data.addListener('click', function (event) {
+            // build the content for the info window
             infowindow.setContent(
                 "<img src=" + event.feature.getProperty("icon") + ">"
-                + "<br /><strong>" + event.feature.getProperty("city") + "</strong>"
                 + "<br />" + event.feature.getProperty("temperature") + "&deg;C"
                 + "<br />" + event.feature.getProperty("weather")
             );
+            // set the open position
             infowindow.setOptions({
                 position: {
                     lat: event.latLng.lat(),
                     lng: event.latLng.lng()
                 },
+                // offset the info window above the open position
                 pixelOffset: {
                     width: 0,
-                    height: -15
+                    height: -10
                 }
             });
+            // finally open the info window
             infowindow.open(map);
-        });
+       });
     }
 
-    var checkIfDataRequested = function () {
+    // function trigger when the map is idle to add the markers. Uses a variable getting data
+    // to check if the process is already in progress
+    function checkIfDataRequested () {
         // Stop extra requests being sent
         while (gettingData === true) {
-            request.abort();
             gettingData = false;
         }
         getCoords();
     };
 
-    // Get the coordinates from the Map bounds
-    var getCoords = function () {
+    // Define the extents of the div/bounds and to get the conditions within it
+    function getCoords () {
+        // Returns the lat/lng bounds of the current viewport/div.
         var bounds = map.getBounds();
         var NE = bounds.getNorthEast();
         var SW = bounds.getSouthWest();
@@ -298,28 +304,39 @@ $(document).ready(function () {
     };
 
     // Make the weather request
-    var getWeather = function (northLat, eastLng, southLat, westLng) {
+    function getWeather (northLat, eastLng, southLat, westLng) {
+        // set variable gettingData as true, i.e. in progress
         gettingData = true;
-        var requestString = "https://api.openweathermap.org/data/2.5/box/city?bbox="
-            + westLng + "," + northLat + "," //left top
+        // Create an AJAX call to retrieve data Log the data in console
+        var queryParameters = {
+            bbox: westLng + "," + northLat + "," //left top
             + eastLng + "," + southLat + "," //right bottom
-            + map.getZoom()
-            + "&cluster=yes&format=json"
-            + "&APPID=" + OpenWeatherMapAPIKey;
-        request = new XMLHttpRequest();
-        request.onload = proccessResults;
-        request.open("get", requestString, true);
-        request.send();
+            + map.getZoom(),
+            cluster: "yes",
+            format: "json",
+            appid: OpenWeatherMapAPIKey,
+        };
+        var queryString = $.param(queryParameters);
+        var queryURL = "https://api.openweathermap.org/data/2.5/box/city?" + queryString;
+        // Call with a get method
+        $.ajax({ url: queryURL, method: 'get' }).done(function (response) {
+            // display todays current conditions
+            proccessResults(response);
+        }).catch(function (err) {
+            console.log(err);
+        });
     };
 
     // Take the JSON results and proccess them
-    var proccessResults = function () {
-        var results = JSON.parse(this.responseText);
-        if (results.list.length > 0) {
+    function proccessResults (response) {
+        // if response are returned proceed
+        if (response.list.length > 0) {
+            // reset the geojson and points from the map
             resetData();
-            for (var i = 0; i < results.list.length; i++) {
-                geoJSON.features.push(jsonToGeoJson(results.list[i]));
-            }
+            // iterate over the response list to extract the required data to a geojson format
+            response.list.forEach(function(item){
+                geoJSON.features.push(jsonToGeoJson(item));
+            });
             drawIcons(geoJSON);
         }
     };
@@ -327,23 +344,17 @@ $(document).ready(function () {
     var infowindow = new google.maps.InfoWindow();
 
     // For each result that comes back, convert the data to geoJSON
-    var jsonToGeoJson = function (weatherItem) {
+    function jsonToGeoJson (weatherItem) {
+        // create the object for each weather item passed in
+        // geojson format, type, properties and geometry
         var feature = {
             type: "Feature",
             properties: {
-                city: weatherItem.name,
-                weather: weatherItem.weather[0].main,
-                temperature: weatherItem.main.temp,
-                min: weatherItem.main.temp_min,
-                max: weatherItem.main.temp_max,
-                humidity: weatherItem.main.humidity,
-                pressure: weatherItem.main.pressure,
-                windSpeed: weatherItem.wind.speed,
-                windDegrees: weatherItem.wind.deg,
-                windGust: weatherItem.wind.gust,
+                // Extract out the required items from the weather items
                 icon: "https://openweathermap.org/img/w/"
                     + weatherItem.weather[0].icon + ".png",
-                coordinates: [weatherItem.coord.Lon, weatherItem.coord.Lat]
+                temperature: weatherItem.main.temp,
+                weather: weatherItem.weather[0].main,
             },
             geometry: {
                 type: "Point",
@@ -365,18 +376,20 @@ $(document).ready(function () {
     };
 
     // Add the markers to the map
-    var drawIcons = function (geoJSON) {
+    function drawIcons (geoJSON) {
         map.data.addGeoJson(geoJSON);
         // Set the flag to finished
         gettingData = false;
     };
 
     // Clear data layer and geoJSON
-    var resetData = function () {
+    function resetData () {
+        // reset the geoJSON object
         geoJSON = {
             type: "FeatureCollection",
             features: []
         };
+        // remove all the current points
         map.data.forEach(function (feature) {
             map.data.remove(feature);
         });
