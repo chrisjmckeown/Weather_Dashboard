@@ -77,19 +77,29 @@ header .navbar-brand{
     height: 200px;
     width: 500px;
 }
-
+.footer {
+    height: 40px;
+    padding: 0px;
+    margin: 0px;
+}
 /* setting footer styles */
-.footer .navbar-brand {
-    font-size: 25px;
-}
-
+.copyright-social-media {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* For horizontal alignment */
+    align-items: center; /* For vertical alignment */
+  }
 /* social media div */
-.footer .media a{
-    font-size: 25px;
+.footer, .footer .copyright-social-media a{
+    font-size: 20px;
     color: white;
-    padding-right:10px;
+    font-family: 'Open Sans', sans-serif;
+  }
+.footer .copyright-social-media a{
+    padding-left: 10px;
+    text-decoration: none;
 }
-.footer .media a:hover{
+.footer .copyright-social-media a:hover{
     color: black;
 }
 
