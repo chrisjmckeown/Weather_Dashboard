@@ -1,14 +1,13 @@
 # Weather Dashboard
+This website provides access to current and future weather conditions.
 
+## Table of Contents
 * [Description](#Description)
 * [Usage](#Usage)
 * [Technologies Utilized](#Technologies-Utilized)
 * [Weather Dashboard](#Weather-Dashboard)
 * [Contact](#Contact)
 * [License](#License)
-
-## Description
-This website provides access to current and future weather conditions.
 
 ## Usage
 GIVEN a weather dashboard with form inputs
